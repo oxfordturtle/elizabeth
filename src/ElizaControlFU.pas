@@ -85,12 +85,12 @@ implementation
 
 uses ElizaTypes,ElizaUtils,ElizaEditFU, ElizaOptionsFU;
 
-const inputiterdef: integer = 10;  {defaults to come into force when recursion}
-      inputcycledef: integer = 10; {checkbox is de-checked}
-      outputiterdef: integer = 10;
-      outputcycledef: integer = 10;
-      finaliterdef: integer = 10;
-      finalcycledef: integer = 10;
+var inputiterdef: integer = 10;  {defaults to come into force when recursion}
+    inputcycledef: integer = 10; {checkbox is de-checked}
+    outputiterdef: integer = 10;
+    outputcycledef: integer = 10;
+    finaliterdef: integer = 10;
+    finalcycledef: integer = 10;
 
 {$R *.DFM}
 

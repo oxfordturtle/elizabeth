@@ -1,3 +1,8 @@
+{11/8/20 - got rid of all typed constants. This could only cause problems in
+ cases where the "constant" is local to a subroutine but important to preserve
+ between calls. So, for example, the STATE "constant" used in function ACTSTRING
+ has now been made a variable within the wider procedure LOADSCRIPT}
+
 {Fixed Turbo Eliza includes to say #INCLUDE My Scripts\...
  Not sure whether FULLPATH should be used in COPYSCRIPT procedure}
 

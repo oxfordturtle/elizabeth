@@ -5,7 +5,7 @@ object ElizaForm: TElizaForm
   Height = 577
   HorzScrollBar.Visible = False
   VertScrollBar.Visible = False
-  Caption = ' Elizabeth for Windows 2.20 (c) Peter Millican, 2002-18'
+  Caption = ' Elizabeth for Windows 2.21 (c) Peter Millican, 2002-20'
   Color = clBtnFace
   Constraints.MinHeight = 572
   Constraints.MinWidth = 795

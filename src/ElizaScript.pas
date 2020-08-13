@@ -19,9 +19,8 @@ type Treadfile = record
                  end;
 
 const maxreadfiles = 20;
-      numreadfiles: integer = 0;
-
-var filearray: array[1..maxreadfiles] of Treadfile;
+var numreadfiles: integer = 0;
+    filearray: array[1..maxreadfiles] of Treadfile;
     lastlineread: string;
 
 procedure initVsettings;
@@ -301,9 +300,10 @@ var origline,scriptline,nextline,actline: string; {current,next line,possible ac
     scripterror: boolean;
     errorcontext: string;
 
+type Tstate = (startampok,startcmd,amp,midline,rbkt);
+var state: Tstate; {USED IN ACTSTRING ONLY, but preserved between calls}
+
  function actstring(var actsofar,newline: string;init: boolean): boolean;
- type Tstate = (startampok,startcmd,amp,midline,rbkt);
- const state: Tstate = startampok; {preserved between calls}
  var posn: integer;
  begin
   result:=true; {false if error}
@@ -439,6 +439,7 @@ begin {procedure loadscript}
  loadingscript:=true;
  scripterror:=not(pushfile(scriptname));
  inittables;
+ state:=startampok; {initialise for ACTSTRING - used to be typed constant}
  nextline:=''; {used to enable possible "&" lines to be read in anticipation}
  while ((numreadfiles>0) or (nextline<>'')) and not(scripterror) do
   begin
