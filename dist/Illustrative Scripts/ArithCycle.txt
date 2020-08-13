@@ -1,0 +1,29 @@
+/ For explanation of this Script, see 'The Power of Recursion' in the Elizabeth
+/ help file.  When it's running, watch the 'Trace' tab for best effect.
+
+/C Recursion ON
+/C Input Cycling unlimited
+
+W TYPE IN A QUESTION LIKE 'WHAT IS -4 PLUS 7?' - USING 'PLUS', 'MINUS', OR 'TIMES'.
+
+I --[number] => [number]
+
+K WHAT IS [term1] PLUS [term2]
+ R THE SUM IS {ADD([term1],[term2])}
+
+K WHAT IS [term1] MINUS [term2]
+ R THE DIFFERENCE IS {ADD([term1],-[term2])}
+
+K WHAT IS [term1] TIMES [term2]
+ R THE PRODUCT IS {MULT([term1],[term2])}
+
+I ADD([term],-[number]) => ADD([dec:[term]],[inc:-[number]])
+I ADD([term],0) => [term]
+I ADD([term],[number]) => ADD([inc:[term]],[dec:[number]])
+
+I MULT(-[number1],-[number2]) => ADD([number1],MULT(-[number1],[inc:-[number2]]))
+I MULT([number1],-[number2]) => ADD(-[number1],MULT([number1],[inc:-[number2]]))
+I MULT([term],0) => 0
+I MULT([term],[number])  => ADD([term],MULT([term],[dec:[number]]))
+
+H SORRY - THAT'S TOO HARD FOR ME!

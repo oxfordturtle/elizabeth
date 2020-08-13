@@ -1,0 +1,10 @@
+/ HANDLING OF "MY" PHRASES FROM TURBO ELIZA
+/
+/ No-Keyword Responses incorporating saved "my" phrases
+N EARLIER YOU MENTIONED THAT YOUR [M].
+N A WHILE BACK YOU SAID YOUR [M].
+N DOES THAT HAVE ANYTHING TO DO WITH THE FACT THAT YOUR [M]?
+/
+/ Method of saving "my" phrases for no-keyword responses above
+I my [phrase] => my [phrase]
+  & {M [phrase]}

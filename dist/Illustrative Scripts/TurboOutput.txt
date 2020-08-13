@@ -1,0 +1,24 @@
+/ OUTPUT TRANSFORMATIONS FROM TURBO ELIZA
+/
+/ Output Transformations
+O are => AM
+O am => ARE
+O were => WAS
+O was => WERE
+O you [] => ME
+O me => YOU
+O you => I
+O i => YOU
+O your => MY
+O my => YOUR
+O i've => YOU'VE
+O you've => I'VE
+O i'm => YOU'RE
+O you're => I'M
+O myself => YOURSELF
+O yourself => MYSELF
+O aren't => AM NOT
+O weren't => WASN'T
+O wasn't => WEREN'T
+O i'd => YOU'D
+O you'd => I'D

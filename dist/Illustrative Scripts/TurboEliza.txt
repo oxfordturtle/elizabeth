@@ -1,0 +1,22 @@
+/ This Script is derived from the one accompanying a public domain Eliza program
+/ (of unknown authorship) written in Turbo Pascal and dating from 1987.  That
+/ program (here referred to as "Turbo Eliza") is currently available from the
+/ Simon Laven website at http://www.simonlaven.com where it is described as
+/ "A brilliant Borland version for you to use at your leisure.  The best Eliza
+/ on here".  The original Script has been corrected of various inconsistencies
+/ and then translated for the Elizabeth program, to provide more or less
+/ identical behaviour, for comparison and as a starting point for experimentation.
+/ To enable the different functions of the Script to be "played with" independently
+/ and incorporated separately within your own Scripts, it has here been modularised,
+/ with its various parts being stored in five "#INCLUDE" files (of which the last is
+/ easily the longest).  The same Script is also available as a single file, named
+/ "TurboAll.txt".
+/ 
+/ Peter Millican, University of Leeds, March 2002.
+/
+/
+#INCLUDE My Scripts\TurboFixed.txt
+#INCLUDE My Scripts\TurboMy.txt
+#INCLUDE My Scripts\TurboInput.txt
+#INCLUDE My Scripts\TurboKeys.txt
+#INCLUDE My Scripts\TurboOutput.txt

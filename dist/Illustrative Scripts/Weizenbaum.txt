@@ -1,0 +1,547 @@
+/P Final punctuation ON
+/P Sequential responses
+/P Blank if no keywords
+/P Upper case output
+/V Fast typing
+/V Normal settings
+
+W HOW DO YOU DO. PLEASE TELL ME YOUR PROBLEM.
+
+
+/ ***** Implicitly required by dialogue[11] *****:
+
+I but => , BUT
+I ,, BUT => , BUT
+
+
+/ ***** Splitting up phrases around punctuation *****
+
+I [phrase] [!] [X] => [phrase] {[X]}
+
+
+/ ***** Deleting multiple responses *****
+
+F [phrase] [.] [X] => [phrase] [.]
+
+
+/ ***** "Corrections" to spelling etc. *****
+
+I dont => don't
+I cant => can't
+I wont => won't
+I dreamed => dreamt
+I i'm => i am
+I you're => you are
+I mom => mother
+I dad => father
+
+
+/ ***** First/second person conversions *****
+
+F i am => YOU ARE
+F your => MY
+F you were => I WAS
+F me => YOU
+F you are => I AM
+F myself => YOURSELF
+F yourself => MYSELF
+F i => YOU
+
+/ not apparently in ELIZA: 
+F you [] => ME
+F you => I
+F my => YOUR
+
+
+/ ***** Assignment of word categories *****
+
+I feel => _BELIEF_ FEEL
+I think => _BELIEF_ THINK
+I believe => _BELIEF_ BELIEVE
+I wish => _BELIEF_ WISH
+
+I mother => _FAMILY_ MOTHER
+I father => _FAMILY_ FATHER
+I brother => _FAMILY_ BROTHER
+I sister => _FAMILY_ SISTER
+I wife => _FAMILY_ WIFE
+I children => _FAMILY_ CHILDREN
+
+I sad => _BAD_ SAD
+I unhappy => _BAD_ UNHAPPY
+I depressed => _BAD_ DEPRESSED
+I sick => _BAD_ SICK
+
+I happy => _GOOD_ HAPPY
+I elated => _GOOD_ ELATED
+I glad => _GOOD_ GLAD
+I better => _GOOD_ BETTER
+
+I everyone => _EVERY_ EVERYONE
+I everybody => _EVERY_ EVERYBODY
+I nobody => _EVERY_ NOBODY
+I noone => _EVERY_ NOONE
+
+
+/ ***** Deletion of categories (e.g. from memorised phrases) ***** /
+
+F _[word]_ =>
+
+
+/ ***** Saving "MY" memories that consist of at least three words *****
+
+I [] MY [word1] [word2] [phrase] => MY [word1] [word2] [phrase]
+  & {M [word1] [word2] [phrase]}
+
+
+/ ***** No-keyword responses involving "MY" memories *****
+
+/ Order changed to conform with published dialogue:
+/ 15. "Bullies. DOES THAT HAVE ANYTHING TO DO WITH THE FACT THAT YOUR BOYFRIEND MADE YOU COME HERE"
+
+N DOES THAT HAVE ANYTHING TO DO WITH THE FACT THAT YOUR [M+1]?
+  &{M+1\}
+N LET'S DISCUSS FURTHER WHY YOUR [M+1]
+  &{M+1\}
+N EARLIER YOU SAID YOUR [M+1]
+  &{M+1\}
+N BUT YOUR [M+1]?
+  &{M+1\}
+
+
+/ ***** Other no-keyword responses *****
+
+N I AM NOT SURE I UNDERSTAND YOU FULLY
+N PLEASE GO ON
+N WHAT DOES THAT SUGGEST TO YOU?
+N DO YOU FEEL STRONGLY ABOUT DISCUSSING SUCH THINGS?
+
+
+/ ***** Keyword already identified in earlier text *****
+
+K [X]
+ R [Mkeydone]
+
+
+
+/ ***** Set keydone if text is non-null *****
+
+O [X] => [X]
+  & {!Mkeydone}
+
+
+/ ***** Re-initialise for next input *****
+
+F [X?] => [X?]
+  & {Mkeydone\}
+
+
+/ ***** Keywords level 50 *****
+
+K COMPUTER
+K MACHINE
+K MACHINES
+K COMPUTERS
+ R DO COMPUTERS WORRY YOU?
+ R WHY DO YOU MENTION COMPUTERS?
+ R WHAT DO YOU THINK MACHINES HAVE TO DO WITH YOUR PROBLEM?
+ R DON'T YOU THINK COMPUTERS CAN HELP PEOPLE?
+ R WHAT ABOUT MACHINES WORRIES YOU?
+ R WHAT DO YOU THINK ABOUT MACHINES?
+
+
+/ ***** Keywords level 15 *****
+
+K NAME
+ R I AM NOT INTERESTED IN NAMES
+ R I'VE TOLD YOU BEFORE, I DON'T CARE ABOUT NAMES - PLEASE CONTINUE
+ R PLEASE CONTINUE
+
+
+/ ***** Keywords level 10 *****
+
+/ 1. "Men are all alike. IN WHAT WAY"
+/ 10. "You are like my father in some ways. WHAT RESEMBLANCE DO YOU SEE"
+
+K ALIKE
+K SAME
+K I AM [phrase1?] LIKE [phrase2]
+K IS [phrase1?] LIKE [phrase2]
+K ARE [phrase1?] LIKE [phrase2]
+K WAS [phrase1?] LIKE [phrase2]
+K YOU REMIND ME OF [phrase]
+ R IN WHAT WAY?
+ R WHAT RESEMBLANCE DO YOU SEE?
+ R WHAT DOES THAT SIMILARITY SUGGEST TO YOU?
+ R WHAT OTHER CONNECTIONS DO YOU SEE?
+ R WHAT DO YOU SUPPOSE THAT RESEMBLANCE MEANS?
+ R WHAT IS THE CONNECTION, DO YOU SUPPOSE?
+ R COULD THERE REALLY BE SOME CONNECTION?
+ R HOW?
+
+
+/ ***** Keywords level 5 *****
+
+K I REMEMBER [phrase]
+ R DO YOU OFTEN THINK OF [phrase]?
+ R DOES THINKING OF [phrase] BRING ANYTHING ELSE TO MIND?
+ R WHAT ELSE DO YOU REMEMBER?
+ R WHY DO YOU REMEMBER [phrase] JUST NOW?
+ R WHAT IN THE PRESENT SITUATION REMINDS YOU OF [phrase]?
+ R WHAT IS THE CONNECTION BETWEEN ME AND [phrase]?
+
+
+K DO YOU REMEMBER [phrase]
+ R DID YOU THINK I WOULD FORGET [phrase]?
+ R WHY DO YOU THINK I SHOULD RECALL [phrase] NOW?
+ R WHAT ABOUT [phrase]?
+ R {WHAT}
+ R YOU MENTIONED [phrase]?
+
+
+/ ***** Keywords level 4 *****
+
+K I DREAMT [phrase]
+ R REALLY, [phrase]?
+ R HAVE YOU EVER FANTASIED [phrase] WHILE YOU WERE AWAKE?
+ R HAVE YOU DREAMT [phrase] BEFORE?
+ R {DREAM}
+
+
+/ ***** Keywords level 3 *****
+
+K IF [phrase]
+ R DO YOU THINK IT'S LIKELY THAT [phrase]?
+ R DO YOU WISH THAT [phrase]?
+ R WHAT DO YOU THINK ABOUT [phrase]?
+ R REALLY, IF [phrase]?
+
+
+K DREAM
+K DREAMS
+ R WHAT DOES THAT DREAM SUGGEST TO YOU?
+ R DO YOU DREAM OFTEN?
+ R WHAT PERSONS APPEAR IN YOUR DREAMS?
+ R DON'T YOU BELIEVE THAT DREAM HAS SOMETHINC TO DO WITH YOUR PROBLEM?
+
+
+/ ***** Keywords level 2 *****
+
+K WAS I [phrase]
+ R WHAT IF YOU WERE [phrase]?
+ R DO YOU THINK YOU WERE [phrase]?
+ R WERE YOU [phrase]?
+ R WHAT WOULD IT MEAN IF YOU WERE [phrase]?
+ R WHAT DOES "[phrase]" SUGGEST TO YOU?
+ R {WHAT}
+
+
+K I WAS [phrase]
+ R WERE YOU REALLY?
+ R WHy DO YOU TELL ME YOU WERE [phrase] NOW?
+ R PERHAPS I ALREADY KNEW YOU WERE [phrase]
+
+
+K WERE YOU [phrase]
+ R WOULD YOU LIKE TO BELIEVE I WAS [phrase]?
+ R WHAT SUGGESTS THAT I WAS [phrase]?
+ R WHAT DO YOU THINK?
+ R PERHAPS I WAS [phrase]
+ R WHAT IF I HAD BEEN [phrase]?
+
+
+/ 7. "Perhaps I could learn to get along with my mother. TELL ME MORE ABOUT YOUR FAMILY"
+/ 8. "My mother takes care of me. WHO ELSE IN YOUR FAMILY TAKES CARE OF YOU"
+/ 9. "My father. YOUR FATHER"
+/ 14. "My father is afraid of everybody. WHAT ELSE COMES TO MIND WHEN YOU THINK OF YOUR FATHER"
+
+K MY [phrase1?] _FAMILY_ [word] [phrase2?]
+ R TELL ME MORE ABOUT YOUR FAMILY
+ R WHO ELSE IN YOUR FAMILY [phrase2?]?
+ R YOUR [word]?
+ R WHAT ELSE COMES TO MIND WHEN YOU THINK OF YOUR [word]?
+
+
+/ 3. "Well, my boyfriend made me come here. YOUR BOYFRIEND MADE YOU COME HERE"
+
+K MY [phrase]
+ R YOUR [phrase]?
+ R WHY DO YOU SAY YOUR [phrase]?
+ R DOES THAT SUGGEST ANYTHING ELSE WHICH BELONGS TO YOU?
+ R IS IT IMPORTANT TO YOU THAT YOUR [phrase]?
+
+
+K _EVERY_ [word] [phrase]
+ R REALLY, [word]?
+ R SURELY NOT [word]?
+ R CAN YOU THINK OF ANYONE IN PARTICULAR?
+ R WHO, FOR EXAMPLE?
+ R YOU ARE THINKING OF A VERY SPECIAL PERSON?
+ R WHO, MAY I ASK?
+ R SOMEONE SPECIAL PERHAPS?
+ R YOU HAVE A PARTICULAR PERSON IN MIND, DON'T YOU?
+ R WHO DO YOU THINK YOU'RE TALKING ABOUT?
+
+
+/ ***** Keywords level 1 *****
+
+/ 2. "They're always bugging us about something or other. CAN YOU THINK OF A SPECIFIC EXAMPLE"
+
+K ALWAYS
+ R CAN YOU THINK OF A SPECIFIC EXAMPLE?
+ R WHEN?
+ R WHAT INCIDENT ARE YOU THINKING OF?
+ R REALLY, ALWAYS?
+
+
+/ ***** Keywords level 0 *****
+
+K DEUTSCH
+K FRANCAIS
+K ITALIAN
+K ESPANOL
+ R I AM SORRY, I SPEAK ONLY ENGLISH
+
+
+K HELLO
+ \R HOW DO YOU DO, PLEASE STATE YOUR PROBLEM
+
+
+/ 4. "He says I'm depressed much of the time. I AM SORRY TO HEAR YOU ARE DEPRESSED"
+/ 5. "It's true. I am unhappy. DO YOU THINK COMING HERE WILL HELP YOU NOT TO BE UNHAPPY"
+
+K I AM [phrase?] _BAD_ [word]
+ R I AM SORRY TO HEAR YOU ARE [word]
+ R DO YOU THINK COMING HERE WILL HELP YOU NOT TO BE [word]?
+ R I'M SURE IT'S NOT PLEASANT TO BE [word]
+ R CAN YOU EXPLAIN WHAT MADE YOU [word]?
+
+
+K I AM [phrase?] _GOOD_ [word]
+ R HOW HAVE I HELPED YOU TO BE [word]?
+ R HAS YOUR TREATMENT MADE YOU [word]?
+ R WHAT MAKES YOU [word] JUST NOW?
+ R CAN YOU EXPLAIN WHY YOU ARE SUDDENLY [word]?
+
+
+K I AM [phrase]
+ R IS IT BECAUSE YOU ARE [phrase] THAT YOU CAME TO ME?
+ R HOW LONG HAVE YOU BEEN [phrase]?
+ R DO YOU BELIEVE IT NORMAL TO BE [phrase]?
+ R DO YOU ENJOY BEING [phrase]?
+
+
+K AM I [phrase]
+ R DO YOU BELIEVE YOU ARE [phrase]?
+ R WOULD YOU WANT TO BE [phrase]?
+ R YOU WISH I WOULD TELL YOU YOU ARE [phrase]?
+ R WHAT WOULD IT MEAN IF YOU WERE [phrase]?
+ R {WHAT}
+
+
+K SORRY
+ R PLEASE DON'T APOLOGIZE.
+ R APOLOGIES ARE NOT NECESSARY.
+ R WHAT FEELINGS DO YOU HAVE WHEN YOU APOLOGIZE?
+ R I'VE TOLD YOU THAT APOLOGIES ARE NOT REQUIRED.
+
+
+K I _BELIEF_ [word] I [phrase]
+ R DO YOU REALLY THINK SO?
+ R BUT YOU ARE NOT SURE YOU [phrase]?
+ R DO YOU REALLY DOUBT YOU [phrase]?
+
+
+K WHY DON'T YOU [phrase]
+ R DO YOU BELIEVE I DON'T [phrase]?
+ R PERHAPS I WILL [phrase] IN GOOD TIME
+ R SHOULD YOU [phrase] YOURSELF?
+ R YOU WANT ME TO [phrase]?
+ R {WHAT}
+
+
+K WHY CAN'T I [phrase]
+ R DO YOU THINK YOU SHOULD BE ABLE TO [phrase]
+ R DO YOU WANT TO BE ABLE TO [phrase]?
+ R DO YOU BELIEVE THIS WILL HELP YOU TO [phrase]?
+ R HAVE YOU ANY IDEA WHY YOU CAN'T [phrase]?
+ R {WHAT}
+
+
+/ 6. "I need some help, that much seems certain. WHAT WOULD IT MEAN TO YOU IF YOU GOT SOME HELP" 
+
+K I WANT [phrase]
+K I NEED [phrase]
+ R WHAT WOULD IT MEAN TO YOU IF YOU GOT [phrase]?
+ R WHY DO YOU WANT [phrase]?
+ R SUPPOSE YOU GOT [phrase] SOON?
+ R WHAT IF YOU NEVER GOT [phrase]?
+ R WHAT WOULD GETTING [phrase] MEAN TO YOU?
+ R WHAT DOES WANTING [phrase] HAVE TO DO WITH THIS DISCUSSION?
+
+
+K I CAN'T [phrase]
+K I CANNOT [phrase]
+ R HOW DO YOU KNOW YOU CAN'T [phrase]?
+ R HAVE YOU TRIED?
+ R PERHAPS YOU COULD [phrase] NOW?
+ R DO YOU REALLY WANT TO BE ABLE TO [phrase]?
+
+
+K I DON'T [phrase]
+ R DON'T YOU REALLY [phrase]?
+ R WHY DON'T YOU [phrase]?
+ R DO YOU WISH TO BE ABLE TO [phrase]?
+ R DOES THAT TROUBLE YOU?
+
+
+K I FEEL [phrase]
+ R TELL ME MORE ABOUT SUCH FEELINGS
+ R DO YOU OFTEN FEEL [phrase]?
+ R DO YOU ENJOY FEELING [phrase]?
+ R OF WHAT DOES FEELING [phrase] REMIND YOU?
+
+
+/ 11. "You are not very aggressive but I think you don't want me to notice that. WHAT MAKES YOU THINK I AM NOT VERY AGGRESSIVE"
+/ 13. "You are afraid of me. DOES IT PLEASE YOU TO BELIEVE I AM AFRAID OF YOU"
+
+K YOU ARE [phrase]
+ R WHAT MAKES YOU THINK I AM [phrase]?
+ R DOES IT PLEASE YOU TO BELIEVE I AM [phrase]?
+ R DO YOU SOMETIMES WISH YOU WERE [phrase]?
+ R PERHAPS YOU WOULD LIKE TO BE [phrase]?
+
+
+K ARE YOU [phrase]
+ R WHY ARE YOU INTERESTED IN WHETHER I AM [phrase] OR NOT?
+ R WOULD YOU PREFER IF I WEREN'T [phrase]?
+ R PERHAPS I AM [phrase] IN YOUR FANTASIES?
+ R DO YOU SOMETIMES THINK I AM [phrase]?
+ R {WHAT}
+
+
+K CAN YOU [phrase]
+ R YOU BELIEVE I CAN [phrase] DON'T YOU?
+ R {WHAT}
+ R YOU WANT ME TO BE ABLE TO [phrase]?
+ R PERHAPS YOU WOULD LIKE TO BE ABLE TO [phrase] YOURSELF?
+
+
+K CAN I [phrase]
+ R WHETHER OR NOT YOU CAN DEPENDS ON YOU MORE THAN ON ME
+ R DO YOU WANT TO BE ABLE TO [phrase]?
+ R PERHAPS YOU DON'T WANT TO [phrase]?
+ R {WHAT}
+
+
+/ 12. "You don't argue with me. WHY DO YOU THINK I DON'T ARGUE WITH YOU"
+
+K YOU [phrase] ME
+ R WHY DO YOU THINK I [phrase] YOU?
+ R YOU LIKE TO THINK I [phrase] YOU - DON'T YOU?
+ R WHAT MAKES YOU THINK I [phrase] YOU?
+ R REALLY, I [phrase] YOU?
+ R DO YOU WISH TO BELIEVE I [phrase] YOU?
+ R REALLY, I [phrase] YOU?
+ R DO YOU WISH TO BELIEVE I [phrase] YOU?
+ R SUPPOSE I DID [phrase] YOU - WHAT WOULD THAT MEAN?
+ R DOES SOMEONE ELSE BELIEVE I [phrase] YOU?
+
+
+K I [phrase] YOU
+ R PERHAPS IN YOUR FANTASY WE [phrase] EACH OTHER?
+ R DO YOU WISH TO [phrase] ME?
+ R YOU SEEM TO NEED TO [phrase] ME
+ R DO YOU [phrase] ANYONE ELSE?
+
+
+K PERHAPS
+K MAYBE
+ R YOU DON'T SEEM QUITE CERTAIN
+ R WHY THE UNCERTAIN TONE?
+ R CAN'T YOU BE MORE POSITIVE?
+ R YOU AREN'T SURE?
+ R DON'T YOU KNOW?
+
+
+K HOW
+K WHEN
+ R {WHAT}
+
+
+K CERTAINLY
+ R {YES}
+
+
+K AM
+ R WHY DO YOU SAY "AM"?
+ R I DON'T UNDERSTAND THAT
+
+
+K ARE [phrase]
+ R DID YOU THINK THEY MIGHT NOT BE [phrase]?
+ R WOULD YOU LIKE IT IF THEY WERE NOT [phrase]?
+ R WHAT IF THEY WERE NOT [phrase]?
+ R POSSIBLY THEY ARE [phrase]
+
+
+K YOUR [phrase]
+ R WHY ARE YOU CONCERNED OVER MY [phrase]?
+ R WHAT ABOUT YOUR OWN [phrase]?
+ R ARE YOU WORRIED ABOUT SOMEONE ELSE'S [phrase]?
+ R REALLY, MY [phrase]?
+
+
+K I [phrase1?] _BELIEF_ [phrase2] YOU
+ R {I}
+
+
+K I WAS
+ R {WAS}
+
+
+K [phrase1?] I [phrase2?]
+ R YOU SAY [phrase1?] YOU [phrase2?]
+ R CAN YOU ELABORATE ON THAT?
+ R DO YOU SAY [phrase1?] YOU [phrase2?] FOR SOME SPECIAL REASON?
+ R THAT'S QUITE INTERESTING
+
+
+K YOU [phrase]
+ R WE WERE DISCUSSING YOU - NOT ME
+ R OH, I [phrase]?
+ R YOU'RE NOT REALLY TALKING ABOUT ME - ARE YOU?
+ R WHAT ARE YOUR FEELINGS NOW?
+
+
+K YES
+ R YOU SEEM QUITE POSITIVE
+ R YOU ARE SURE?
+ R I SEE
+ R I UNDERSTAND
+
+
+K NO
+ R ARE YOU SAYING "NO" JUST TO BE NEGATIVE?
+ R YOU ARE BEING A BIT NEGATIVE
+ R WHY NOT?
+ R WHY "NO"?
+
+
+K WHAT
+ R WHY DO YOU ASK?
+ R DOES THAT QUESTION INTEREST YOU?
+ R WHAT IS IT YOU REALLY WANT TO KNOW?
+ R ARE SUCH QUESTIONS MUCH ON YOUR MIND?
+ R WHAT ANSWER WOULD PLEASE YOU MOST?
+ R WHAT DO YOU THINK?
+ R WHAT COMES TO YOUR MIND WHFN YOU ASK THAT?
+ R HAVE YOU ASKED SUCH QUESTIONS BEFORE?
+ R HAVE YOU ASKED ANYONE ELSE?
+
+
+K BECAUSE
+ R IS THAT THE REAL REASON?
+ R DON'T ANY OTHER REASONS COME TO MIND?
+ R DOES THAT REASON SEEM TO EXPLAIN ANYTHING ELSE?
+ R WHAT OTHER REASONS MIGHT THERE BE?

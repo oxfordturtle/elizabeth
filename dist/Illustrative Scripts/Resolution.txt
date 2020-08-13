@@ -1,0 +1,88 @@
+/ For full explanation of this Script, see 'Implementing Propositional Logic' in the
+/ Elizabeth help file.  When it's running, watch the 'Memory' tab for best effect.
+
+/C Recursion ON
+/C Matchlimit 50000
+/C Input Iteration unlimited
+/C Input Cycling unlimited
+
+W INPUT 'EG', OR AN ARGUMENT USING PROPOSITIONAL LETTERS, 'NOT', 'AND', 'OR', 'IMPLIES', 'THEREFORE', AND PUNCTUATION BETWEEN PROPOSITIONS.
+
+I eg. => G implies (O and B) ; B implies T ; (O and T) implies not(E) ; E ; therefore not(G).
+
+<[M-1]==$>: F [x?] => THE ARGUMENT IS VALID
+  & {!M-1 [x?]
+     !F\}
+
+H THE ARGUMENT APPEARS TO BE INVALID
+
+Mstage 1
+
+<[Mstage]==1>: I ( => <
+<[Mstage]==1>: I ) => >
+
+<[Mstage]==1>: I [X] [!] [x?] => [x?]
+               & {!M [X]}
+
+<[Mstage]==1>: I [] => %END%
+
+K %END%
+ <[Mstage]==5a>: R %END%
+                 & {!Mstage 5}
+ <[Mstage]==8>:  R %END%
+                 & {!Mstage 7}
+
+K %END%
+R %END%
+  & {!Mstage [inc:[Mstage]]}
+
+F [x] => {[M+1]}
+  & {!M+1\
+     !M [x]}
+
+I (([b1])) => ([b1])
+I <([b1])> => ([b1])
+
+<[Mstage]==2>: I [word] => (^[word])
+<[Mstage]==2>: I (^not) => not
+<[Mstage]==2>: I (^and) => and
+<[Mstage]==2>: I (^or) => or
+<[Mstage]==2>: I (^implies) => implies
+<[Mstage]==2>: I (^therefore) => therefore
+
+<[Mstage]==2>: I therefore [x] => not<[x]>
+
+<[Mstage]==3>: I not ([b1]) => (NOT([b1]))
+<[Mstage]==3>: I ([b1]) and ([b2]) => (([b1]) AND ([b2]))
+<[Mstage]==3>: I ([b1]) or ([b2]) => (([b1]) OR ([b2]))
+<[Mstage]==3>: I ([b1]) implies ([b2]) => ((NOT([b1])) OR ([b2]))
+
+<[Mstage]==4>: I NOT(NOT([b1])) => [b1]
+<[Mstage]==4>: I NOT(([b1]) OR ([b2])) => (NOT([b1])) AND (NOT([b2]))
+<[Mstage]==4>: I NOT(([b1]) AND ([b2])) => (NOT([b1])) OR (NOT([b2]))
+<[Mstage]==4>: I ([b1]) OR (([b2]) AND ([b3])) => (([b1]) OR ([b2])) AND (([b1]) OR ([b3]))
+<[Mstage]==4>: I (([b2]) AND ([b3])) OR ([b1]) => (([b2]) OR ([b1])) AND (([b3]) OR ([b1]))
+
+<[Mstage]==5>: I [] ([b1] AND [b2]) [] => [b2]
+               & {!M [b1]
+                  !Mstage 5a}
+
+<[Mstage]==6>: I (NOT(^[word])) => <[word]>
+<[Mstage]==6>: I OR ([b1] OR [b2]) => OR [b1] OR [b2]
+<[Mstage]==6>: I ([b1] OR [b2]) OR => [b1] OR [b2] OR
+<[Mstage]==6>: I [] ([b1] OR [b2]) [] => [b1] OR [b2]
+<[Mstage]==6>: I OR =>
+<[Mstage]==6>: I ^[word] => [word]
+
+<[Mstage]==7>: I [] ([word]) [] => $ ([word])
+  & {!<['Mstage]==7>: O [] [b1?] <[word]> [b2?] [] => [b1?] <[word]% [b2?]
+                      & {!M [b1?] [b2?]
+                         !Mstage 8}}
+
+<[Mstage]==7>: I [] <[word]> [] => $ <[word]>
+  & {!<['Mstage]==7>: O [] [b1?] ([word]) [b2?] [] => [b1?] ([word]% [b2?]
+                      & {!M [b1?] [b2?]
+                         !Mstage 8}}
+
+<[Mstage]==8>: I <[word]% => <[word]>
+<[Mstage]==8>: I ([word]% => ([word])

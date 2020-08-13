@@ -1,0 +1,73 @@
+/ For explanation of this Script, see 'Defining and Using Conditional Commands' in the
+/ Elizabeth help file.  When it's running, watch the 'Memory' tab for best effect.
+
+/ First a welcome message to get the questionnaire going
+
+W PLEASE TELL ME YOUR NAME
+  & {Mstate ASKNAME}
+/ And a simple void input response and quitting message
+V WELL?
+Q BYE!
+
+/ The next keyword set prevents the conversation from continuing after the name and address have already been given and confirmed
+<[Mstate]==FINISH>: K [X?]
+ R I've got your details now - goodbye!
+ R Please could you go now?
+
+/ The next keyword set deals with confirming words
+K YES
+K CORRECT
+K RIGHT
+ <[Mstate]==CONFIRMNAME>: R Good. Now please tell me your Oxford address.
+                          & {Mstate ASKADDR}
+ <[Mstate]==CONFIRMADDR>: R Excellent. That's it, now - goodbye!
+                          & {Mstate FINISH}
+
+/ Now for a set of disconfirming words
+K NO
+K INCORRECT
+K WRONG
+ <[Mstate]==CONFIRMNAME>: R Let's start again, then. Please give me your first name followed by your surname.
+                          & {Mstate ASKNAME}
+ <[Mstate]==CONFIRMADDR>: R Let's do that again, then. Please give me your full Oxford address.
+                          & {Mstate ASKADDR}
+
+/ The next keyword will respond only to input of exactly two words
+K [] [word1] [word2] []
+ <[Mstate]==ASKNAME>: R OK - so your first name is [word1] and your surname is [word2]?
+                      & {Mstate CONFIRMNAME
+                         Mfirstname [word1]
+                         Msurname [word2]}
+
+/ The next keyword set identifies an Oxford address plus postcode.
+/ It assumes that the address starts with a number.
+K [number] [X] [!1?] OXFORD [!2?] OX[dig1][dig2?] [dig3][let1][let2]
+K [number] [X] [!1?] OXFORD [!2?] OX[dig1][dig2?][dig3][let1][let2]
+ <[Mstate]==ASKADDR>: R Fine. I have your name as [Mfirstname] [Msurname] and your address as [number] [X] OXFORD, OX[dig1][dig2?] [dig3][let1][let2]
+                      & {Mstate CONFIRMADDR
+                         Maddress [number] [X] , OXFORD
+                         Mpostcode OX[dig1][dig2?] [dig3][let1][let2]}
+
+/ The next keyword is designed to identify an Oxford address with no postcode
+K [number] [X] [!?] OXFORD
+ <[Mstate]==ASKADDR>: R OK - so your Oxford address is [number] [X], but what's your postcode?
+                      & {Mstate ASKPOST
+                         Maddress [number] [X] , OXFORD}
+
+/ The next keyword is designed to identify an Oxford postcode.
+K OX[dig1][dig2?] [dig3][let1][let2]
+K OX[dig1][dig2?][dig3][let1][let2]
+ <[Mstate]==ASKPOST>: R Fine. I have your name as [Mfirstname] [Msurname] and your address as [Maddress], OX[dig1][dig2?] [dig3][let1][let2]
+                      & {Mstate CONFIRMADDR
+                         Mpostcode OX[dig1][dig2?] [dig3][let1][let2]}
+
+/ The next keyword points out when an 'OX' string doesn't appear to be a valid postcode
+K OX[term?]
+ <[Mstate]==ASKPOST>: R That doesn't look like a valid Oxford postcode to me. Please could you give it again?
+
+/Finally, some no-keyword responses to deal with anything that hasn't already been picked up
+<[Mstate]==ASKNAME>: N Please just tell me your first name followed by your surname.
+<[Mstate]==CONFIRMNAME>: N Is your name [Mfirstname] [Msurname] - just yes or no, please?
+<[Mstate]==ASKADDR>: N Your full Oxford address, please.
+<[Mstate]==ASKPOST>: N Please just tell me your Oxford postcode.
+<[Mstate]==CONFIRMADDR>: N Is your address [Maddress], [Mpostcode] - just yes or no, please?

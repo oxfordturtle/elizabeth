@@ -1,0 +1,6 @@
+/ INPUT TRANSFORMATIONS FROM TURBO ELIZA
+/
+/ Input Transformations
+I dad => father
+I mom => mother
+I dreams => dream

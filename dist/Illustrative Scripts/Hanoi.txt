@@ -1,0 +1,16 @@
+/ For explanation of this Script, see 'The Power of Recursion' in the Elizabeth
+/ help file.  When it's running, watch the 'Trace' tab for best effect.
+
+/C Recursion ON
+
+W GIVE A COMMAND SUCH AS 'MOVE ABCD FROM 1 TO 2'
+I not12 => 3
+I not21 => 3
+I not13 => 2
+I not31 => 2
+I not23 => 1
+I not32 => 1
+
+K MOVE [word][letter] FROM [dig1] TO [dig2]
+R {MOVE [word] FROM [dig1] TO not[dig1][dig2]} ; MOVE [letter] FROM [dig1] TO [dig2] ; {MOVE [word] FROM not[dig1][dig2] TO [dig2]}
+

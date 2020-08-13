@@ -1,0 +1,23 @@
+W TYPE "SAVE <string>" TO SAVE A STRING IN THE ARRAY, AND "FIND <string>" TO LOCATE A SAVED STRING WITHIN THE ARRAY. 
+
+Mindex Array_1
+
+K SAVE [X?] [!]
+ R [X?] SAVED AS [Mindex]
+  & {M[Mindex] [X?]
+     Mindex [inc: [Mindex]]}
+
+K FIND [X?] [!]
+ R {RETRIEVE}
+  & {!Msearchindex Array_1
+     !Msearchstring [X?]}
+
+K RETRIEVE
+ <[Mindex]==[Msearchindex]>: R [Msearchstring] NOT FOUND
+
+K RETRIEVE
+ <[M[Msearchindex]]==[Msearchstring]>:  R [Msearchstring] FOUND AT [Msearchindex]
+
+K RETRIEVE
+  & {!Msearchindex [inc: [Msearchindex]]}
+ R {RETRIEVE}

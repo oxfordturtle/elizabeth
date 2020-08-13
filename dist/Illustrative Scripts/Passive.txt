@@ -1,0 +1,31 @@
+/ For explanation of this Script, see 'Implementing Grammatical Rules' in the
+/ Elizabeth help file.  When it's running, watch the 'Trace' tab for best effect.
+
+/C Input Cycling unlimited
+/C Output Cycling unlimited
+
+I a => (d: A)
+I the => (d: THE)
+I cat => (n: CAT)
+I dog => (n: DOG)
+I rabbit => (n: RABBIT)
+I bites => (v: BITES)
+I chases => (v: CHASES)
+I likes => (v: LIKES)
+I (d: [b1]) (n: [b2]) => (np: (D: [b1]) (N: [b2]))
+I (v: [b1]) (np: [b2]) => (vp: (V: [b1]) (NP: [b2]))
+I (np: [b1]) (vp: [b2]) => (s: (NP: [b1]) (VP: [b2]))
+
+K (s: (NP: [b1]) (VP: [b2]))
+ R (s: (VP: [b2] passive) (NP: [b1]))
+
+O (s: (VP: [b1] passive) (NP: [b2])) => (vp: [b1] passive) (np: [b2])
+O (vp: (V: [b1]) (NP: [b2]) passive) =>  (np: [b2]) (v: [b1] passive)
+O (np: (D: [b1]) (N: [b2])) => (d: [b1]) (n: [b2])
+O (v: BITES passive) => IS BITTEN BY
+O (v: CHASES passive) => IS CHASED BY
+O (v: LIKES passive) => IS LIKED BY
+O (d: [b1]) => [b1]
+O (n: [b1]) => [b1]
+
+W TYPE A SENTENCE USING:  A, THE, CAT, DOG, RABBIT, BITES, CHASES, LIKES

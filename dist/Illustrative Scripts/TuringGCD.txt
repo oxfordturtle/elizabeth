@@ -1,0 +1,141 @@
+/P Echo if no keywords
+
+/ The Script begins with Welcome, and Void responses:
+W PLEASE ENTER A TURING MACHINE TAPE, e.g. " 0 1 1 1 1 0 1 1 0" (zeros are assumed beyond this range)
+  & {Mstate 0}
+V PLEASE ENTER A TURING MACHINE TAPE, e.g. " 0 1 1 1 1 0 1 1 0" (zeros are assumed beyond this range)
+  & {Mstate 0}
+N PLEASE ENTER A TURING MACHINE TAPE, e.g. " 0 1 1 1 1 0 1 1 0" (zeros are assumed beyond this range)
+  & {Mstate 0}
+
+/ Memory location to store state of machine, initially "0"
+Mstate 0
+
+/ Input transformations to initialise machine
+
+<[Mstate]==0>: I [] 0 [x?] => L 0 R [x?]
+   & {!Mstate 1}
+
+<[Mstate]==0>: I [] 1 [x?] => L 1 R [x?]
+   & {!Mstate 1}
+
+/ Input transformations to remove surplus external zeros
+I [] 0 0 => 0
+I 0 0 [] => 0
+
+/ Input transformations to ensure a zero at each end
+I [] 1 => 0 1
+I [] L => 0 L
+I 1 [] => 1 0
+I R [] => R 0
+
+/ Keyword transformations to implement Turing transitions
+
+/ S = machine state before transition
+/ C = character read from current position
+/ c = character to write to current position
+/ s = machine state after transition
+
+/ Template for right
+/ <[Mstate]==S>: K [x1?] L C R [n] [x2?]
+/  R {[x1?] c L [n] R [x2?]}
+/    & {!Mstate s}
+
+/Template for left
+/ <[Mstate]==S>: K [x1?] [n] L C R [x2?]
+/  R {[x1?] L [n] R c [x2?]}
+/    & {!Mstate s}
+
+/Template for no-move
+/ <[Mstate]==S>: K [x1?] L C R [x2?]
+/  R {[x1?] L c R [x2?]}
+/    & {!Mstate s}
+
+<[Mstate]==1>: K [x1?] L 0 R [n] [x2?]
+ R {[x1?] 0 L [n] R [x2?]}
+
+<[Mstate]==1>: K [x1?] [n] L 1 R [x2?]
+ R {[x1?] L [n] R 1 [x2?]}
+   & {!Mstate 2}
+
+<[Mstate]==2>: K [x1?] L 0 R [n] [x2?]
+ R {[x1?] 1 L [n] R [x2?]}
+   & {!Mstate 3}
+
+<[Mstate]==2>: K [x1?] [n] L 1 R [x2?]
+ R {[x1?] L [n] R 1 [x2?]}
+
+<[Mstate]==3>: K [x1?] L 0 R [n] [x2?]
+ R {[x1?] 0 L [n] R [x2?]}
+   & {!Mstate 11}
+
+<[Mstate]==3>: K [x1?] L 1 R [n] [x2?]
+ R {[x1?] 0 L [n] R [x2?]}
+   & {!Mstate 4}
+
+<[Mstate]==4>: K [x1?] L 0 R [n] [x2?]
+ R {[x1?] 0 L [n] R [x2?]}
+   & {!Mstate 5}
+
+<[Mstate]==4>: K [x1?] L 1 R [n] [x2?]
+ R {[x1?] 1 L [n] R [x2?]}
+
+<[Mstate]==5>: K [x1?] L 0 R [n] [x2?]
+ R {[x1?] 0 L [n] R [x2?]}
+
+<[Mstate]==5>: K [x1?] L 1 R [n] [x2?]
+ R {[x1?] 0 L [n] R [x2?]}
+   & {!Mstate 6}
+
+<[Mstate]==6>: K [x1?] [n] L 0 R [x2?]
+ R {[x1?] L [n] R 0 [x2?]}
+   & {!Mstate 8}
+
+<[Mstate]==6>: K [x1?] [n] L 1 R [x2?]
+ R {[x1?] L [n] R 1 [x2?]}
+   & {!Mstate 7}
+
+<[Mstate]==7>: K [x1?] [n] L 0 R [x2?]
+ R {[x1?] L [n] R 0 [x2?]}
+
+<[Mstate]==7>: K [x1?] [n] L 1 R [x2?]
+ R {[x1?] L [n] R 1 [x2?]}
+   & {!Mstate 2}
+
+<[Mstate]==8>: K [x1?] [n] L 0 R [x2?]
+ R {[x1?] L [n] R 0 [x2?]}
+
+<[Mstate]==8>: K [x1?] [n] L 1 R [x2?]
+ R {[x1?] L [n] R 1 [x2?]}
+   & {!Mstate 9}
+
+<[Mstate]==9>: K [x1?] [n] L 0 R [x2?]
+ R {[x1?] L [n] R 0 [x2?]}
+   & {!Mstate 10}
+
+<[Mstate]==9>: K [x1?] [n] L 1 R [x2?]
+ R {[x1?] L [n] R 1 [x2?]}
+
+<[Mstate]==10>: K [x1?] L 0 R [n] [x2?]
+ R {[x1?] 0 L [n] R [x2?]}
+   & {!Mstate 3}
+
+<[Mstate]==10>: K [x1?] [n] L 1 R [x2?]
+ R {[x1?] L [n] R 1 [x2?]}
+   & {!Mstate 2}
+
+<[Mstate]==11>: K [x1?] L 0 R [x2?]
+ R {[x1?] L 0 R [x2?]}
+   & {!Mstate 12}
+
+<[Mstate]==11>: K [x1?] L 1 R [n] [x2?]
+ R {[x1?] 1 L [n] R [x2?]}
+
+/ Output transformations to remove final "L" and "R"
+<[Mstate]==12>: O L =>
+<[Mstate]==12>: O R =>
+   & {!Mstate 0}
+
+/ Output transformations to remove surplus external zeros
+O [] 0 0 => 0
+O 0 0 [] => 0

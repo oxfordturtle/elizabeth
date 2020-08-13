@@ -1,0 +1,61 @@
+/ For explanation of this Script, see 'Implementing Grammatical Rules' in the
+/ Elizabeth help file.  When it's running, watch the 'Trace' tab for best effect.
+
+/C Input Cycling unlimited
+/C Output Cycling unlimited
+
+W TYPE A SENTENCE USING: A, THE, MAN, MEN, WOMAN, WOMEN, DOG, DOGS, I, WE, YOU, HE, SHE, IT, THEY, LIKES, LIKE, LIKED, CHASES, CHASE, CHASED.
+
+I a => (d: A)
+I the => (d: THE)
+I man => (n: MAN,sing,3rd,masc)
+I men => (n: MEN,plur,3rd,masc)
+I woman => (n: WOMAN,sing,3rd,fem)
+I women => (n: WOMEN,plur,3rd,fem)
+I dog => (n: DOG,sing,3rd,neut)
+I dogs => (n: DOGS,plur,3rd,neut)
+I i => (p: I,sing,1st,any)
+I we => (p: WE,plur,1st,any)
+I you => (p: YOU,sing,2nd,any)
+I he => (p: HE,sing,3rd,masc)
+I she => (p: SHE,sing,3rd,fem)
+I it => (p: IT,sing,3rd,neut)
+I they => (p: THEY,plur,3rd,any)
+I likes => (v: LIKES,pres)
+I like => (v: LIKE,pres)
+I liked => (v: LIKED,past)
+I chases => (v: CHASES,pres)
+I chase => (v: CHASE,pres)
+I chased => (v: CHASED,past)
+
+I (p: [bw],[wn],[tp],[wg]) => (np: (P: [bw]),[wn],[tp],[wg])
+I (d: [bw1]) (n: [bw2],[wn],[tp],[wg]) => (np: (D: [bw1]) (N: [bw2]),[wn],[tp],[wg])
+I (v: [bw1],[wt]) (np: [bw2],[wn],[tp],[wg]) => (vp: (V: [bw1]) (NP: [bw2]),[wt])
+I (np: [bw1],[wn],[tp],[wg]) (vp: [bw2],[wt]) => (s: (NP: [bw1]) (VP: [bw2]),[wn],[tp],[wg],[wt])
+
+K (s: [bw],[wn],[tp],[wg],[wt])
+R (s: [bw]) , (t: [wn],[tp],[wg],[wt]) ?
+
+O (s: (NP: [bw1]) (VP: [bw2])) => (np: [bw1]) (vp: [bw2])
+O (vp: (V: [bw1]) (NP: [bw2])) => (v: [bw1]) (np: [bw2])
+O (np: (D: [bw1]) (N: [bw2])) => (d: [bw1]) (n: [bw2])
+O (np: (P: [bw])) => (p: [bw])
+
+O (d: [w]) => [w]
+O (n: [w]) => [w]
+O (p: [w]) => [w]
+O (v: [w]) => [w]
+
+O (t: [wn],[tp],[wg],[wt]) => (do: [wn],[tp],[wt]) (pro: [wn],[tp],[wg])
+O (do: [wn],1st,pres) => DON'T
+O (do: [wn],2nd,pres) => DON'T
+O (do: sing,3rd,pres) => DOESN'T
+O (do: plur,3rd,pres) => DON'T
+O (do: [wn],[tp],past) => DIDN'T
+O (pro: sing,1st,[wg]) => I
+O (pro: plur,1st,[wg]) => WE
+O (pro: [wn],2nd,[wg]) => YOU
+O (pro: sing,3rd,masc) => HE
+O (pro: sing,3rd,fem) => SHE
+O (pro: sing,3rd,neut) => IT
+O (pro: plur,3rd,[wg]) => THEY
